@@ -1,12 +1,1 @@
-﻿  Water.cpp
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Shader.h(56,40): warning C4101: 'e': unreferenced local variable
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(180,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(358,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(573,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(574,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(578,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(579,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(581,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(582,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Water.cpp(592,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Computer Graphics Final Project.vcxproj -> C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Debug\Computer Graphics Final Project.exe
+﻿  Computer Graphics Final Project.vcxproj -> C:\Users\skh21\Desktop\OpenGL-Terrain-and-Water-generation\Debug\Computer Graphics Final Project.exe

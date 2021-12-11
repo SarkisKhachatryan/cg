@@ -20,6 +20,10 @@
 
 using namespace std;
 
+//void glDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+//	std::cout << "[OpenGL Error](" << type << ") " << message << std::endl;
+//}
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -255,6 +259,7 @@ int main(void)
 		glfwTerminate();
 		return -1;
 	}
+	//glDebugMessageCallback(glDebugCallback, 0);
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
@@ -360,12 +365,13 @@ int main(void)
 		lastFrame = currentFrame;
 
 		cameraReflection.Position = vec3(cameraReflection.Position[0], -cameraReflection.Position[1], cameraReflection.Position[2]);
+		//cameraReflection.Pitch = -cameraReflection.Pitch;
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 projectionReflection = glm::perspective(glm::radians(cameraReflection.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		projectionMatrix = projection;
-		water_program.setMat4("projection", projection);
+		water_program.setMat4("projection", projectionReflection);
 
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 viewReflection = cameraReflection.GetViewMatrix();
@@ -376,13 +382,13 @@ int main(void)
 		// Render into custom FrameBuffer
 		reflection.Bind(SCR_WIDTH, SCR_HEIGHT);
 		//TODO
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glBindVertexArray(VAO_G);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_g);
 		ground_program.use();
 		
-		ground_program.setMat4("projection", projectionReflection);
+		ground_program.setMat4("projection", projection);
 		ground_program.setMat4("view", view);
 
 		texture_ground.Bind(GL_TEXTURE0);

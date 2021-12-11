@@ -40,7 +40,7 @@ void main()
     vec3 result = (ambient) * vec3(0.0f, 0.0f, 1.0f);
     //FragColor = mix(texture(textureMain, coord), vec4(result, 0.3), 0.2);
 
-    FragColor = mix(texture(textureMain, coord), texture(Reflection, fs_in.TexCoord), 0.9);
+    FragColor = mix(texture(textureMain, coord), texture(Reflection, fs_in.TexCoord), 0.2);
 }
 
 
