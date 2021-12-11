@@ -12,7 +12,7 @@ uniform sampler2D DudvMap;
 uniform sampler2D Reflection;
 
 in vec3 NormalG;
-in vec3 FragPosG;
+in vec4 FragPosG;
 
 uniform vec3 lightPos = vec3(-10.0f, 1.0f, 2.0f);
 uniform vec3 viewPos;
@@ -33,14 +33,15 @@ void main()
 
     // diffuse 
     vec3 norm = normalize(NormalG);
-    vec3 lightDir = normalize(lightPos - FragPosG);
+    vec3 lightDir = normalize(lightPos - vec3(FragPosG));
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
     vec3 result = (ambient) * vec3(0.0f, 0.0f, 1.0f);
     //FragColor = mix(texture(textureMain, coord), vec4(result, 0.3), 0.2);
+    vec2 ss = (FragPosG.xy / FragPosG.w) * 0.5 + 0.5;
 
-    FragColor = mix(texture(textureMain, coord), texture(Reflection, fs_in.TexCoord), 0.2);
+    FragColor = mix(texture(textureMain, coord), texture(Reflection, vec2(ss.x, -ss.y)), 0.5);
 }
 
 

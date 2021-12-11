@@ -17,7 +17,7 @@ out GS_OUT
 
 
 in vec3 Normal[];
-in vec3 FragPos[];
+in vec4 FragPos[];
 in mat4 modelToPass[];
 in mat4 viewToPass[];
 in mat4 projectionToPass[];
@@ -30,7 +30,7 @@ float waveLenght = 10.0f;
 
 out vec2 TexCoordG;
 out vec3 NormalG;
-out vec3 FragPosG;
+out vec4 FragPosG;
 
 uniform vec3 rippleCenter[];
 
@@ -48,6 +48,7 @@ void createWave(vec4 position, int vetrexIndex) {
     position = position + vec4(0.0, y_pos, 0.0, 0.0);
     position = projectionToPass[vetrexIndex] * viewToPass[vetrexIndex] * modelToPass[vetrexIndex] * position;
     gl_Position = position;
+    FragPosG = position;
     gs_out.TexCoord = gs_in_p[vetrexIndex].TexCoord;
 
     //vec4 worldPosition = gl_in[vetrexIndex].gl_Position;
@@ -67,8 +68,16 @@ void main() {
     
     }
 
+    else {
+        for (int i = 0; i < 3; ++i) {
+            vec4 position = projectionToPass[i] * viewToPass[i] * modelToPass[i] * gl_in[i].gl_Position;
+            gl_Position = position;
+            FragPosG = position;
+        }
+
+    }
+
     NormalG = mat3(transpose(inverse(modelToPass[1]))) * vec3(0, 1, 0);
-    FragPosG = FragPos[0];
 
     EndPrimitive();
 }

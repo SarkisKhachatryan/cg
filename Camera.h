@@ -120,7 +120,7 @@ public:
       // returns the inverted camera matrix
     }
 
-private:
+public:
     // calculates the front vector from the Camera's (updated) Euler Angles
     void updateCameraVectors()
     {

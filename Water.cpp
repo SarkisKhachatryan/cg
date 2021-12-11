@@ -357,27 +357,31 @@ int main(void)
 		//TODO //
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//TODO //
-		//glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		
+		//glCullFace(GL_BACK);
 
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-		cameraReflection.Position = vec3(cameraReflection.Position[0], -cameraReflection.Position[1], cameraReflection.Position[2]);
-		//cameraReflection.Pitch = -cameraReflection.Pitch;
+		cameraReflection.Position = vec3(camera.Position[0], -camera.Position[1], camera.Position[2]);
+		cameraReflection.Pitch = -camera.Pitch;
+		cameraReflection.updateCameraVectors();
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 projectionReflection = glm::perspective(glm::radians(cameraReflection.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		projectionMatrix = projection;
-		water_program.setMat4("projection", projectionReflection);
+		water_program.setMat4("projection", projection);
 
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 viewReflection = cameraReflection.GetViewMatrix();
 
 		water_program.setMat4("view", view);
 		water_program.setFloat("time", currentFrame);
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT);
 
 		// Render into custom FrameBuffer
 		reflection.Bind(SCR_WIDTH, SCR_HEIGHT);
@@ -389,7 +393,7 @@ int main(void)
 		ground_program.use();
 		
 		ground_program.setMat4("projection", projection);
-		ground_program.setMat4("view", view);
+		ground_program.setMat4("view", viewReflection);
 
 		texture_ground.Bind(GL_TEXTURE0);
 		texture_ground_map.Bind(GL_TEXTURE1);
@@ -588,7 +592,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	lastY = ypos;
 
 	camera.ProcessMouseMovement(xoffset, yoffset);
-	cameraReflection.ProcessMouseMovement(xoffset, -yoffset);
+	cameraReflection.ProcessMouseMovement(xoffset, yoffset);
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
