@@ -329,19 +329,19 @@ int main(void)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ground.indexCount * sizeof(int), ground.indexBuffer, GL_STATIC_DRAW);
 
 	// Add textures to bind them afterwards
-	Texture texture = Texture("C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/Media/WaterDiffuse.png");
-	Texture texture_dudv = Texture("C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/Media/dudv_map.png");
-	Texture texture_ground = Texture("C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/Media/TerrainDiffuse.png");
-	Texture texture_ground_map = Texture("C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/Media/TerrainHeightMap.png");
+	Texture texture = Texture("./Media/WaterDiffuse.png");
+	Texture texture_dudv = Texture("./Media/dudv_map.png");
+	Texture texture_ground = Texture("./Media/TerrainDiffuse.png");
+	Texture texture_ground_map = Texture("./Media/TerrainHeightMap.png");
 
-	Shader ground_program("C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/ground_vertex.shader", "C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/ground_fragment.shader");
+	Shader ground_program("./ground_vertex.shader", "./ground_fragment.shader");
 	ground_program.use();
 	ground_program.setInt("textureMainGround", 0);
 	ground_program.setInt("heightMap", 1);
 
 	ground_program.setVec3("viewPos", camera.Position);
 
-	Shader water_program("C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/water_vertex.shader", "C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/water_fragment.shader", "C:/Users/skh21/Desktop/OpenGL-Terrain-and-Water-generation/water_geometry.shader");
+	Shader water_program("./water_vertex.shader", "./water_fragment.shader", "./water_geometry.shader");
     	water_program.use();
 	water_program.setInt("textureMain", 2);
 	water_program.setInt("DudvMap", 3);
