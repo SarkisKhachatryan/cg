@@ -44,5 +44,3 @@ void main()
     FragColor = mix(texture(textureMain, coord), texture(Reflection, vec2(ss.x, -ss.y)), 0.5);
 }
 
-
-

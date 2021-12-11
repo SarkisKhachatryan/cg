@@ -47,6 +47,15 @@
     <None Include="water_geometry.shader">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="grass_vertex.shader">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="grass_geometry.shader">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="grass_fragment.shader">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Mesh.cpp">

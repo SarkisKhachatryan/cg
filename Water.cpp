@@ -333,6 +333,13 @@ int main(void)
 	Texture texture_dudv = Texture("./Media/dudv_map.png");
 	Texture texture_ground = Texture("./Media/TerrainDiffuse.png");
 	Texture texture_ground_map = Texture("./Media/TerrainHeightMap.png");
+	
+	Texture grassDist("./res/GrassDistribution.png");
+	Texture grassText("./res/GrassDiffuse.png");
+	
+	Shader sh3("./grass_vertex.shader",
+		"./grass_geometry.shader",
+		"./grass_fragment.shader");
 
 	Shader ground_program("./ground_vertex.shader", "./ground_fragment.shader");
 	ground_program.use();
@@ -405,6 +412,11 @@ int main(void)
 		glDrawElements(GL_TRIANGLE_STRIP, ground.indexCount, GL_UNSIGNED_INT, nullptr);
 
 		reflection.Unbind();
+		grassDist.Bind(GL_TEXTURE1);
+		grassText.Bind(GL_TEXTURE2);
+		glUniform1i(glGetUniformLocation(sh3.GetProgramId(), "grassDist"), 1);
+		glUniform1i(glGetUniformLocation(sh3.GetProgramId(), "grassText"), 2);
+
 		glDisable(GL_CULL_FACE);
 
 		// Start Rendering to norm` Shader
