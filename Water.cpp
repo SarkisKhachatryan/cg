@@ -283,6 +283,9 @@ int main(void)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	// Add water surface to the scene
 	unsigned int VBO, VAO;
 	glGenVertexArrays(1, &VAO);
@@ -316,6 +319,14 @@ int main(void)
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_G);
 	glBufferData(GL_ARRAY_BUFFER, ground.size * sizeof(GLfloat), ground.coordinates, GL_STATIC_DRAW);
 
+	//for (int i = 0; i < ground.size * sizeof(GLfloat); i += 5) {
+	//	for (int j = 0; j < 3; ++j) {
+	//		if (ground.coordinates[i + j] > 1.0f + 0.0001f || ground.coordinates[i + j] < 0.0f - 0.0001f) {
+	//			std::cout << ground.coordinates[i + j] << std::endl;
+	//		}
+	//	}
+	//}
+
 	// position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)vertex_position_offset);
 	glEnableVertexAttribArray(0);
@@ -334,12 +345,8 @@ int main(void)
 	Texture texture_ground = Texture("./Media/TerrainDiffuse.png");
 	Texture texture_ground_map = Texture("./Media/TerrainHeightMap.png");
 	
-	Texture grassDist("./res/GrassDistribution.png");
-	Texture grassText("./res/GrassDiffuse.png");
-	
-	//Shader sh3("./ground_vertex.shader",
-	//	"./grass_geometry.shader",
-	//	"./grass_fragment.shader");
+	Texture grass_dist("./Media/GrassDistribution.png");
+	Texture grass_textexture("./Media/GrassDiffuse.png");
 
 	Shader ground_program("./ground_vertex.shader", "./ground_fragment.shader", "./ground_geometry.shader");
 	ground_program.use();
@@ -354,6 +361,10 @@ int main(void)
 	water_program.setInt("DudvMap", 3);
 	water_program.setInt("Reflection", 4);
 	water_program.setVec3("viewPos", camera.Position);
+
+	Shader grass_program("./ground_vertex.shader",
+		"./grass_fragment.shader",
+		"./grass_geometry.shader");
 
 	FrameBuffer reflection = FrameBuffer(SCR_WIDTH, SCR_HEIGHT);
 
@@ -414,8 +425,8 @@ int main(void)
 		reflection.Unbind();
 		//grassDist.Bind(GL_TEXTURE1);
 		//grassText.Bind(GL_TEXTURE2);
-		//glUniform1i(glGetUniformLocation(sh3.GetProgramId(), "grassDist"), 1);
-		//glUniform1i(glGetUniformLocation(sh3.GetProgramId(), "grassText"), 2);
+		//glUniform1i(glGetUniformLocation(grass_program.GetProgramId(), "grassDist"), 1);
+		//glUniform1i(glGetUniformLocation(grass_program.GetProgramId(), "grassText"), 2);
 
 		glDisable(GL_CULL_FACE);
 
@@ -481,8 +492,29 @@ int main(void)
 
 		model = glm::mat4(1.0f);
 		water_program.setMat4("model", model);
+		water_program.setMat4("view", view);
+		water_program.setFloat("time", currentFrame);
+		water_program.setMat4("projection", projection);
 
 		glDrawElements(GL_TRIANGLE_STRIP, water.indexCount, GL_UNSIGNED_INT, nullptr);
+
+
+
+		grass_program.use();
+		grass_program.setMat4("projection", projection);
+		grass_program.setMat4("view", view);
+		grass_program.setMat4("model", model);
+
+
+		texture_ground_map.Bind(GL_TEXTURE0);
+		grass_dist.Bind(GL_TEXTURE1);
+		grass_textexture.Bind(GL_TEXTURE2);
+
+		glUniform1i(glGetUniformLocation(grass_program.ID, "heightMap"), 0);
+		glUniform1i(glGetUniformLocation(grass_program.ID, "grassDist"), 1);
+		glUniform1i(glGetUniformLocation(grass_program.ID, "grassText"), 2);
+		glDrawElements(GL_TRIANGLE_STRIP, ground.indexCount, GL_UNSIGNED_INT, nullptr);
+
 
 		//Swap front and back buffers 
 		glfwSwapBuffers(window);

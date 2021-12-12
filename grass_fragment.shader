@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec2 texCoords;
+in vec2 TexCoords;
 
 out vec4 color;
 
@@ -29,7 +29,7 @@ void main() {
     //    }
 
         //vec4(normalize(vec4(Id , 1.0) *
-    color = texture(grassText, texCoords);    //+ Is  + Id
+    color = texture(grassText, TexCoords);    //+ Is  + Id
     //
     //color = texture(terrainTexture, texCoords);
 }

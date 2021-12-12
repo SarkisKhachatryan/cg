@@ -41,6 +41,6 @@ void main()
     //FragColor = mix(texture(textureMain, coord), vec4(result, 0.3), 0.2);
     vec2 ss = (FragPosG.xy / FragPosG.w) * 0.5 + 0.5;
 
-    FragColor = mix(texture(textureMain, coord), texture(Reflection, vec2(ss.x, -ss.y)), 0.5);
+    FragColor = vec4(mix(texture(textureMain, coord), texture(Reflection, vec2(ss.x, -ss.y)), 0.5).rgb, 0.7);
 }
 
