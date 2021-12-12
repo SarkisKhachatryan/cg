@@ -43,7 +43,7 @@ void createWave(vec4 position, int vetrexIndex) {
     float centerZ = rippleCenter[vetrexIndex].z * 0.8;
 
     float distanceFromCenter = sqrt(pow((position.x - centerX), 2.0) + pow((position.z - centerZ), 2.0));
-    float y_pos = (sin(distanceFromCenter* waveLenght - timeToPass[0]*10.0) / (distanceFromCenter * waveLenght - timeToPass[0] * 10.0))*amp;
+    float y_pos = (sin(distanceFromCenter* waveLenght - timeToPass[0] * 10.0) / (distanceFromCenter * waveLenght - timeToPass[0] * 10.0)) * amp;
 
     position = position + vec4(0.0, y_pos, 0.0, 0.0);
     position = projectionToPass[vetrexIndex] * viewToPass[vetrexIndex] * modelToPass[vetrexIndex] * position;

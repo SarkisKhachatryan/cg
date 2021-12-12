@@ -17,12 +17,7 @@
 #include "Mesh.h"
 #include "FrameBuffer.h"
 
-
 using namespace std;
-
-//void glDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-//	std::cout << "[OpenGL Error](" << type << ") " << message << std::endl;
-//}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -30,14 +25,14 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void processInput(GLFWwindow* window);
 
-// settings
+// screen sizes
 const unsigned int SCR_WIDTH = 1000;
 const unsigned int SCR_HEIGHT = 1000;
-
 // camera
-Camera camera(glm::vec3(2.0f, 5.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+Camera camera(glm::vec3(1.0f, 5.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 70.0f, -25.0f);
 // Second camera used for reflection
-Camera cameraReflection(glm::vec3(2.0f, 5.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+Camera cameraReflection(glm::vec3(1.0f, 5.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 70.0f, -25.0f);
+
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -279,10 +274,12 @@ int main(void)
 		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
 	}
 
+	//face cool
 	glClearDepth(1);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
+	//blend and set alpha for grass transparency
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -356,15 +353,15 @@ int main(void)
 	ground_program.setVec3("viewPos", camera.Position);
 
 	Shader water_program("./water_vertex.shader", "./water_fragment.shader", "./water_geometry.shader");
-    	water_program.use();
+    water_program.use();
 	water_program.setInt("textureMain", 2);
 	water_program.setInt("DudvMap", 3);
 	water_program.setInt("Reflection", 4);
 	water_program.setVec3("viewPos", camera.Position);
 
 	Shader grass_program("./ground_vertex.shader",
-		"./grass_fragment.shader",
-		"./grass_geometry.shader");
+						"./grass_fragment.shader",
+						"./grass_geometry.shader");
 
 	FrameBuffer reflection = FrameBuffer(SCR_WIDTH, SCR_HEIGHT);
 
@@ -422,6 +419,7 @@ int main(void)
 
 		glDrawElements(GL_TRIANGLE_STRIP, ground.indexCount, GL_UNSIGNED_INT, nullptr);
 
+		glDisable(GL_CULL_FACE);
 
 		grass_program.use();
 		grass_program.setMat4("projection", projection);
@@ -439,12 +437,8 @@ int main(void)
 		glDrawElements(GL_TRIANGLE_STRIP, ground.indexCount, GL_UNSIGNED_INT, nullptr);
 
 		reflection.Unbind();
-		//grassDist.Bind(GL_TEXTURE1);
-		//grassText.Bind(GL_TEXTURE2);
-		//glUniform1i(glGetUniformLocation(grass_program.GetProgramId(), "grassDist"), 1);
-		//glUniform1i(glGetUniformLocation(grass_program.GetProgramId(), "grassText"), 2);
 
-		glDisable(GL_CULL_FACE);
+		//glDisable(GL_CULL_FACE);
 
 		// Start Rendering to norm` Shader
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -505,7 +499,6 @@ int main(void)
 		texture_dudv.Bind(GL_TEXTURE3);
 		reflection.BindTexture(GL_TEXTURE4);
 		
-
 		model = glm::mat4(1.0f);
 		water_program.setMat4("model", model);
 		water_program.setMat4("view", view);
@@ -514,13 +507,10 @@ int main(void)
 
 		glDrawElements(GL_TRIANGLE_STRIP, water.indexCount, GL_UNSIGNED_INT, nullptr);
 
-
-
 		grass_program.use();
 		grass_program.setMat4("projection", projection);
 		grass_program.setMat4("view", view);
 		grass_program.setMat4("model", model);
-
 
 		texture_ground_map.Bind(GL_TEXTURE0);
 		grass_dist.Bind(GL_TEXTURE1);
@@ -530,7 +520,6 @@ int main(void)
 		glUniform1i(glGetUniformLocation(grass_program.ID, "grassDist"), 1);
 		glUniform1i(glGetUniformLocation(grass_program.ID, "grassText"), 2);
 		glDrawElements(GL_TRIANGLE_STRIP, ground.indexCount, GL_UNSIGNED_INT, nullptr);
-
 
 		//Swap front and back buffers 
 		glfwSwapBuffers(window);
@@ -584,7 +573,7 @@ vec3 ConstructRayFromPixel(float fov, vec2 pixel) {
 
 	vec3 ray = convertToWorldCoordinates(eyeCoordinates, camera.GetViewMatrix());
 
-	//cout << ray[0]<< " x " << ray[1] << " y " << ray[2] << endl;
+	cout << ray[0]<< " x " << ray[1] << " y " << ray[2] << endl;
 
 	rayExists = true;
 	return ray;
@@ -600,16 +589,11 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 		if (cursorHidden) {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		}
-		else {
+		} else {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
 		}
-
 		cursorHidden = !cursorHidden;
 	}
-
-
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(FORWARD, deltaTime);
@@ -636,10 +620,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (firstMouse)
-	{
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+	if (firstMouse) {
 		lastX = xpos;
 		lastY = ypos;
 		firstMouse = false;
