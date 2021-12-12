@@ -14,7 +14,7 @@ out float timeToPass;
 out VS_OUT {
 	vec2 TexCoord;
 	int performWave;
-} vs_out;
+} vertex_shader_out;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -27,15 +27,13 @@ void main() {
 	projectionToPass = projection;
 	timeToPass = time;
 
-
 	if (performWave) {
-		vs_out.performWave = 1;
+		vertex_shader_out.performWave = 1;
 	}
 
 	gl_Position = vec4(aPos, 1.0f);
-	vs_out.TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+	vertex_shader_out.TexCoord = vec2(aTexCoord.x, aTexCoord.y);
 
 	FragPos = vec4(aPos, 1.0);
 	Normal = transpose(inverse(mat3(model))) * vec3(0, 1, 0);
-
 }

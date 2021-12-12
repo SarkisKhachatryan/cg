@@ -5,11 +5,11 @@ layout(triangle_strip, max_vertices = 3) out;
 in VS_OUT {
     vec2 TexCoord;
     int performWave;
-} gs_in_p[];
+} geometry_shader_in_p[];
 
 out GS_OUT {
     vec2 TexCoord;
-} gs_out;
+} geometry_shader_out;
 
 in vec3 Normal[];
 in vec4 FragPos[];
@@ -39,13 +39,13 @@ void createWave(vec4 position, int vetrexIndex) {
     position = projectionToPass[vetrexIndex] * viewToPass[vetrexIndex] * modelToPass[vetrexIndex] * position;
     gl_Position = position;
     FragPosG = position;
-    gs_out.TexCoord = gs_in_p[vetrexIndex].TexCoord;
+    geometry_shader_out.TexCoord = geometry_shader_in_p[vetrexIndex].TexCoord;
 
     EmitVertex();
 }
 
 void main() {
-    if (gs_in_p[0].performWave == 1) {
+    if (geometry_shader_in_p[0].performWave == 1) {
         createWave(gl_in[0].gl_Position, 0);
         createWave(gl_in[1].gl_Position, 1);
         createWave(gl_in[2].gl_Position, 2);

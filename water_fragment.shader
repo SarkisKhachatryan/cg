@@ -3,7 +3,7 @@ out vec4 FragColor;
 
 in GS_OUT {
     vec2 TexCoord;
-} fs_in;
+} fragment_shader_in;
 
 // water texture
 uniform sampler2D textureMain;
@@ -20,8 +20,8 @@ uniform vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 uniform float offset;
 
 void main() {
-	vec2 distortion1 = (texture(DudvMap, fs_in.TexCoord).rg * 2.0 - 1.0) * 0.9;
-    vec2 coord = fs_in.TexCoord * vec2(5,5);
+	vec2 distortion1 = (texture(DudvMap, fragment_shader_in.TexCoord).rg * 2.0 - 1.0) * 0.9;
+    vec2 coord = fragment_shader_in.TexCoord * vec2(5,5);
 	coord += vec2(offset, 0);
 	coord += distortion1;
 

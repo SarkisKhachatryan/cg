@@ -258,7 +258,7 @@ int main() {
 	glBufferData(GL_ARRAY_BUFFER, water.size * sizeof(GLfloat), water.coordinates, GL_STATIC_DRAW);
 
 	// position attribute
-	GLintptr vertex_position_offset = 0 * sizeof(float);
+	GLintptr vertex_position_offset = 0;
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)vertex_position_offset);
 	glEnableVertexAttribArray(0);
 	// texture coord attribute
@@ -291,10 +291,10 @@ int main() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ground.indexCount * sizeof(int), ground.indexBuffer, GL_STATIC_DRAW);
 
 	// get textures and bind
-	Texture texture = Texture("./Media/WaterDiffuse.png");
-	Texture texture_dudv = Texture("./Media/dudv_map.png");
-	Texture texture_ground = Texture("./Media/TerrainDiffuse.png");
-	Texture texture_ground_map = Texture("./Media/TerrainHeightMap.png");
+	Texture texture("./Media/WaterDiffuse.png");
+	Texture texture_dudv("./Media/dudv_map.png");
+	Texture texture_ground("./Media/TerrainDiffuse.png");
+	Texture texture_ground_map("./Media/TerrainHeightMap.png");
 	Texture grass_dist("./Media/GrassDistribution.png");
 	Texture grass_textexture("./Media/GrassDiffuse.png");
 
@@ -320,11 +320,11 @@ int main() {
 	Shader grass_program("./ground_vertex.shader",
 						"./grass_fragment.shader",
 						"./grass_geometry.shader");
-	//grass_program.use() in while
+	// grass_program.use() in while
 
 	FrameBuffer reflection = FrameBuffer(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!glfwWindowShouldClose(window)) {
 		float currentFrame = glfwGetTime();
