@@ -337,11 +337,11 @@ int main(void)
 	Texture grassDist("./res/GrassDistribution.png");
 	Texture grassText("./res/GrassDiffuse.png");
 	
-	Shader sh3("./grass_vertex.shader",
-		"./grass_geometry.shader",
-		"./grass_fragment.shader");
+	//Shader sh3("./ground_vertex.shader",
+	//	"./grass_geometry.shader",
+	//	"./grass_fragment.shader");
 
-	Shader ground_program("./ground_vertex.shader", "./ground_fragment.shader");
+	Shader ground_program("./ground_vertex.shader", "./ground_fragment.shader", "./ground_geometry.shader");
 	ground_program.use();
 	ground_program.setInt("textureMainGround", 0);
 	ground_program.setInt("heightMap", 1);
@@ -412,10 +412,10 @@ int main(void)
 		glDrawElements(GL_TRIANGLE_STRIP, ground.indexCount, GL_UNSIGNED_INT, nullptr);
 
 		reflection.Unbind();
-		grassDist.Bind(GL_TEXTURE1);
-		grassText.Bind(GL_TEXTURE2);
-		glUniform1i(glGetUniformLocation(sh3.GetProgramId(), "grassDist"), 1);
-		glUniform1i(glGetUniformLocation(sh3.GetProgramId(), "grassText"), 2);
+		//grassDist.Bind(GL_TEXTURE1);
+		//grassText.Bind(GL_TEXTURE2);
+		//glUniform1i(glGetUniformLocation(sh3.GetProgramId(), "grassDist"), 1);
+		//glUniform1i(glGetUniformLocation(sh3.GetProgramId(), "grassText"), 2);
 
 		glDisable(GL_CULL_FACE);
 

@@ -29,6 +29,7 @@
     <None Include="grass_fragment.shader" />
     <None Include="grass_geometry.shader" />
     <None Include="grass_vertex.shader" />
+    <None Include="ground_geometry.shader" />
     <None Include="water_geometry.shader" />
     <None Include="ground_fragment.shader" />
     <None Include="ground_vertex.shader" />
