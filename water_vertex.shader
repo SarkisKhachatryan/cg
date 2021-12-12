@@ -11,22 +11,17 @@ out mat4 viewToPass;
 out mat4 projectionToPass;
 out float timeToPass;
 
-out VS_OUT
-{
+out VS_OUT {
 	vec2 TexCoord;
 	int performWave;
 } vs_out;
-
-
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform bool performWave;
 
-
-void main()
-{
+void main() {
 	modelToPass = model;
 	viewToPass = view;
 	projectionToPass = projection;

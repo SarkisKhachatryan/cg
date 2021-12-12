@@ -2,7 +2,7 @@
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
-in VS_OUT{
+in VS_OUT {
     vec2 TexCoord;
 } gs_in[];
 
@@ -13,8 +13,7 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-vec3 getNormal()
-{
+vec3 getNormal() {
     vec3 a = vec3(gl_in[0].gl_Position) - vec3(gl_in[1].gl_Position);
     vec3 b = vec3(gl_in[2].gl_Position) - vec3(gl_in[1].gl_Position);
     return normalize(cross(b, a));
@@ -34,5 +33,6 @@ void main() {
     gl_Position = projection * view * model * gl_in[2].gl_Position;
     TexCoords = gs_in[2].TexCoord;
     EmitVertex();
-    EndPrimitive();
+
+    EndPrimitive();// finilaze triangle
 }
