@@ -10,12 +10,10 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-
 uniform sampler2D textureMainGround;
 uniform sampler2D heightMap;
 
-void main()
-{
+void main() {
 	gl_Position = vec4(aPos.x, (aPos.y + texture(heightMap, aTexCoord).r) - 0.5, aPos.z, 1.0f);
 	vs_out.TexCoord = aTexCoord;
 }

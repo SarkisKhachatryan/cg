@@ -15,7 +15,6 @@
 
 
 FrameBuffer::FrameBuffer(int width, int height) {
-
 	unsigned int frameBuffer;
 	glGenFramebuffers(1, &frameBuffer);
 
@@ -24,20 +23,16 @@ FrameBuffer::FrameBuffer(int width, int height) {
 
 	m_frameBufferID = frameBuffer;
 
-	//FrameBuffer::Bind(width, height);
-
 	m_textureID = InitTextureAttachment(width, height);
 	m_textureDepthID = InitDepthTextureAttachment(width, height);
 }
 
-void FrameBuffer::BindTexture(int slot)
-{
+void FrameBuffer::BindTexture(int slot) {
 	glActiveTexture(slot);
 	glBindTexture(GL_TEXTURE_2D, m_textureID);
 }
 
 int FrameBuffer::InitTextureAttachment(int width, int height) {
-
 	unsigned int texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -50,11 +45,9 @@ int FrameBuffer::InitTextureAttachment(int width, int height) {
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
 
 	return texture;
-
 }
 
 int FrameBuffer::InitDepthTextureAttachment(int width, int height) {
-
 	unsigned int texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -67,7 +60,6 @@ int FrameBuffer::InitDepthTextureAttachment(int width, int height) {
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture, 0);
 
 	return texture;
-
 }
 
 int FrameBuffer::InitRenderBufferAttachment(int width, int height) {
@@ -81,15 +73,11 @@ int FrameBuffer::InitRenderBufferAttachment(int width, int height) {
 }
 
 void FrameBuffer::Bind(int width, int height) {
-
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_frameBufferID);
 	glViewport(0, 0, width, height);
-
 }
 
 void FrameBuffer::Unbind() {
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 }

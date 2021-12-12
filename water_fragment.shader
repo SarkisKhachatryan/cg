@@ -20,8 +20,7 @@ uniform vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 
 uniform float offset;
 
-void main()
-{
+void main() {
 	vec2 distortion1 = (texture(DudvMap, fs_in.TexCoord).rg * 2.0 - 1.0) * 0.9;
     vec2 coord = fs_in.TexCoord * vec2(5,5);
 	coord += vec2(offset, 0);
