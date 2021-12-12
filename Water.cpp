@@ -48,7 +48,7 @@ float lastFrame = 0.0f;
 
 // waves
 float waveSpeed = 0.3f;
-float waterOffset = 0;
+float waterOffset = 0.5f;
 
 // projection matrix
 mat4 projectionMatrix;
@@ -420,6 +420,22 @@ int main(void)
 		ground_program.setMat4("model", model);
 
 
+		glDrawElements(GL_TRIANGLE_STRIP, ground.indexCount, GL_UNSIGNED_INT, nullptr);
+
+
+		grass_program.use();
+		grass_program.setMat4("projection", projection);
+		grass_program.setMat4("view", viewReflection);
+		grass_program.setMat4("model", model);
+
+
+		texture_ground_map.Bind(GL_TEXTURE0);
+		grass_dist.Bind(GL_TEXTURE1);
+		grass_textexture.Bind(GL_TEXTURE2);
+
+		glUniform1i(glGetUniformLocation(grass_program.ID, "heightMap"), 0);
+		glUniform1i(glGetUniformLocation(grass_program.ID, "grassDist"), 1);
+		glUniform1i(glGetUniformLocation(grass_program.ID, "grassText"), 2);
 		glDrawElements(GL_TRIANGLE_STRIP, ground.indexCount, GL_UNSIGNED_INT, nullptr);
 
 		reflection.Unbind();

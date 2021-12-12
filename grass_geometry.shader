@@ -37,9 +37,9 @@ void generateGrassObj(vec4 position, float size) {
 void main() {
 
     vec4 centroidCoords = (gl_in[0].gl_Position + gl_in[1].gl_Position + gl_in[2].gl_Position) / 3.0;
-    vec2 pos = vec2((centroidCoords.x + 1) / 2, 1.0 - (centroidCoords.z + 1) / 2);
+    vec2 pos = vec2((centroidCoords.x + 1) / 11, (centroidCoords.z + 1) / 11);
     vec4 texValue = texture(grassDist, pos);
-    float size = 0.35;
+    float size = 0.55;
 
     if (texValue.r > 0.95) {
         generateGrassObj(centroidCoords, size);

@@ -25,7 +25,7 @@ in float timeToPass[];
 
 
 
-float amp = 0.4f;
+float amp = 0.3f;
 float waveLenght = 10.0f;
 
 out vec2 TexCoordG;
@@ -39,8 +39,8 @@ uniform vec4 plane = vec4(0, 1, 0, 0);
 
 
 void createWave(vec4 position, int vetrexIndex) {
-    float centerX = -rippleCenter[vetrexIndex].x*0.8;
-    float centerZ = rippleCenter[vetrexIndex].z*0.8;
+    float centerX = -rippleCenter[vetrexIndex].x * 0.8;
+    float centerZ = rippleCenter[vetrexIndex].z * 0.8;
 
     float distanceFromCenter = sqrt(pow((position.x - centerX), 2.0) + pow((position.z - centerZ), 2.0));
     float y_pos = (sin(distanceFromCenter* waveLenght - timeToPass[0]*10.0) / (distanceFromCenter * waveLenght - timeToPass[0] * 10.0))*amp;
