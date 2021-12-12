@@ -66,8 +66,7 @@ vec3 vertice3;
 vec3 vertice4;
 vec3 intersection = vec3(-15.0f, 0, 54.0f);
 
-
-// Structure Surface
+// Surface
 struct Surface {
 	GLfloat* coordinates; // vertex information.
 	int size; // generated coordinates array size.
@@ -77,12 +76,12 @@ struct Surface {
 	void print() { cout << "coordinates " << coordinates << " coordinate_size " << size; };
 };
 
-// Returns number of vertices needed
+// number of vertices needed
 int getVerticesCount(int hVertices, int vVertices) {
 	return hVertices * vVertices * 5;
 }
 
-// Returns number of indices needed
+// number of indices needed
 int getIndicesCount(int hVertices, int vVertices) {
 	int numStripsRequired = vVertices - 1;
 	int numDegensRequired = 2 * (numStripsRequired - 1);
@@ -93,7 +92,6 @@ int getIndicesCount(int hVertices, int vVertices) {
 
 // Generate coordinates for vertices
 GLfloat* generateVerticies(int hVertices, int vVertices, int size, int verticeCount) {
-
 	GLfloat* surfaceVertices = new GLfloat[verticeCount];
 
 	GLfloat cellSize = (float)(size) / (float)(hVertices);
@@ -110,7 +108,6 @@ GLfloat* generateVerticies(int hVertices, int vVertices, int size, int verticeCo
 			surfaceVertices[verticeIndex + 3] = 0.0f + (float)(cellSize * row) / size;
 			surfaceVertices[verticeIndex + 4] = 0.0f + (float)(cellSize * col) / size;
 
-			// Add $ vertices to global for check of rayCasting
 			if (row == 0 && col == vVertices - 1) {
 				vertice1 = vec3((float)(ratioR * size), 0.0f, (float)(ratioC * size));
 			}
@@ -125,59 +122,41 @@ GLfloat* generateVerticies(int hVertices, int vVertices, int size, int verticeCo
 			}
 
 			verticeIndex += 5;
-
 		}
 	}
 
 	return surfaceVertices;
-
 }
 
-// Generates the sequence of indices
+// sequence of indices
 int* getIndices(int width, int height, int indicesCount) {
-
 	int* indices = new int[indicesCount];
-
 	int offset = 0;
 
 	for (int y = 0; y < height - 1; y++) {
 		if (y > 0) {
-			// Degenerate begin: repeat first vertex
 			indices[offset++] = (int)(y * height);
 		}
 
 		for (int x = 0; x < width; x++) {
-			// One part of the strip
 			indices[offset++] = (int)((y * height) + x);
 			indices[offset++] = (int)(((y + 1) * height) + x);
 		}
 
 		if (y < height - 2) {
-			// Degenerate end: repeat last vertex
 			indices[offset++] = (int)(((y + 1) * height) + (width - 1));
 		}
 	}
-
-
-	/*for (int y = 0; y < indicesCount; y++) {
-
-		cout << indices[y] << endl;
-	}*/
-
 	return indices;
-
 }
 
 Surface GenerateIndexedTriangleStripPlane(int hVertices, int vVertices, float size) {
-
-	// Get number of Indices and Vertices
+	// indices and vertices
 	int verticeCount = getVerticesCount(hVertices, vVertices);
 	int indicesCount = getIndicesCount(hVertices, vVertices);
-
-	// Generate vecs
+	// generate vecs
 	GLfloat* surfaceVerticies = generateVerticies(hVertices, vVertices, size, verticeCount);
 	int* surfaceIndices = getIndices(hVertices, vVertices, indicesCount);
-
 
 	Surface surfaceData = {};
 
@@ -189,21 +168,23 @@ Surface GenerateIndexedTriangleStripPlane(int hVertices, int vVertices, float si
 	return surfaceData;
 };
 
-bool IntersectTriangle(vec3 dir, vec3 v0, vec3 v1, vec3 v2, vec3 orig)
-{
+bool IntersectTriangle(vec3 dir, vec3 v0, vec3 v1, vec3 v2, vec3 orig) {
 	vec3 v0v1 = v1 - v0;
 	vec3 v0v2 = v2 - v0;
-	vec3 N = cross(v0v2, v0v1); // N 
+	vec3 N = cross(v0v2, v0v1);
 	float denom = dot(N, N);
 
 	float NdotRayDirection = dot(N, dir);
-	if (fabs(NdotRayDirection) < INTERSECT_EPSILON) // almost 0 
-		return false; // they are parallel so they don't intersect ! 
+	if (fabs(NdotRayDirection) < INTERSECT_EPSILON) {
+		return false;
+	}
 
 	float d = dot(N, v0);
 
 	float t = -((dot(N, orig) - d) / NdotRayDirection);
-	if (t < 0) return false; // the triangle is behind 
+	if (t < 0) {
+		return false;
+	}
 
 	intersection = orig + t * dir;
 
@@ -213,31 +194,25 @@ bool IntersectTriangle(vec3 dir, vec3 v0, vec3 v1, vec3 v2, vec3 orig)
 	vec3 edge0 = v1 - v0;
 	vec3 vp0 = intersection - v0;
 	C = cross( vp0, edge0);
-	//if (dot(N, C) < 0) return false; // P is on the right side 
 
 	vec3 edge1 = v2 - v1;
 	vec3 vp1 = intersection - v1;
 	C = cross(vp1, edge1);
-	//if ((dot(N, C)) < 0)  return false; // P is on the right side 
 
 	vec3 edge2 = v0 - v2;
 	vec3 vp2 = intersection - v2;
 	C = cross(vp2, edge2);
-	//if ((dot(N, C)) < 0) return false; // P is on the right side; 
 
-	return true; // this ray hits the triangle 
+	return true;
 }
 
-int main(void)
-{
-
+int main() {
 	// Generate Ground Surface
 	Surface ground = GenerateIndexedTriangleStripPlane(500, 500, 10);
-	ground.print();
-
+	//ground.print();
 	// Generate Water Surface
 	Surface water = GenerateIndexedTriangleStripPlane(500, 500, 10);
-	water.print();
+	//water.print();
 
 	/* GLFW start*/
 	GLFWwindow* window;
